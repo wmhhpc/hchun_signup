@@ -2,12 +2,12 @@
 // 如「模組目錄」= signup，則「首字大寫模組目錄」= Signup
 // 如「資料表名」= actions，則「模組物件」= Actions
 
-namespace XoopsModules\Hchun_signup;
+namespace XoopsModules\首字大寫模組目錄;
 
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
-class Hchun_signup_actions
+class 模組物件
 {
     //列出所有資料
     public static function index()
@@ -31,7 +31,7 @@ class Hchun_signup_actions
             $xoopsTpl->assign($col_name, $col_val);
         }
 
-        $op = empty($id) ? "hchun_signup_actions_store" : "hchun_signup_actions_update";
+        $op = empty($id) ? "資料表名_store" : "資料表名_update";
         $xoopsTpl->assign('next_op', $op);
 
         //套用formValidator驗證機制
@@ -59,7 +59,7 @@ class Hchun_signup_actions
             $$var_name = $myts->addSlashes($var_val);
         }
 
-        $sql = "insert into `" . $xoopsDB->prefix("hchun_signup_actions") . "` (
+        $sql = "insert into `" . $xoopsDB->prefix("資料表名") . "` (
         `欄位1`,
         `欄位2`,
         `欄位3`
@@ -113,7 +113,7 @@ class Hchun_signup_actions
             $$var_name = $myts->addSlashes($var_val);
         }
 
-        $sql = "update `" . $xoopsDB->prefix("hchun_signup_actions") . "` set
+        $sql = "update `" . $xoopsDB->prefix("資料表名") . "` set
         `欄位1` = '{$欄位1值}',
         `欄位2` = '{$欄位2值}',
         `欄位3` = '{$欄位3值}'
@@ -132,7 +132,7 @@ class Hchun_signup_actions
             return;
         }
 
-        $sql = "delete from `" . $xoopsDB->prefix("hchun_signup_actions") . "`
+        $sql = "delete from `" . $xoopsDB->prefix("資料表名") . "`
         where `id` = '{$id}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
@@ -146,7 +146,7 @@ class Hchun_signup_actions
             return;
         }
 
-        $sql = "select * from `" . $xoopsDB->prefix("hchun_signup_actions") . "`
+        $sql = "select * from `" . $xoopsDB->prefix("資料表名") . "`
         where `id` = '{$id}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
@@ -159,7 +159,7 @@ class Hchun_signup_actions
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
 
-        $sql = "select * from `" . $xoopsDB->prefix("hchun_signup_actions") . "` where 1 ";
+        $sql = "select * from `" . $xoopsDB->prefix("資料表名") . "` where 1 ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
         while ($data = $xoopsDB->fetchArray($result)) {

@@ -5,6 +5,7 @@
 namespace XoopsModules\Hchun_signup;
 
 use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\Utility;
 
 class Hchun_signup_actions
@@ -21,10 +22,16 @@ class Hchun_signup_actions
     //編輯表單
     public static function create($id = '')
     {
-        global $xoopsTpl;
+        global $xoopsTpl, $xoopsUser;
+
+        if (!$_SESSION['hchun_signup_adm']) {
+            redirect_header($_SERVER['PHP_SELF'], 3, "非管理員，無法執行此動作");
+        }
 
         //抓取預設值
         $db_values = empty($id) ? [] : self::get($id);
+        $db_values['number'] = empty($id) ? 50 : $db_values['number'];
+        $db_values['enable'] = empty($id) ? 1 : $db_values['enable'];
 
         foreach ($db_values as $col_name => $col_val) {
             $$col_name = $col_val;
@@ -43,6 +50,11 @@ class Hchun_signup_actions
         $token = new \XoopsFormHiddenToken();
         $token_form = $token->render();
         $xoopsTpl->assign("token_form", $token_form);
+
+        $uid = $xoopsUser->uid();
+        $xoopsTpl->assign("uid", $uid);
+
+        My97DatePicker::render();
     }
 
     //新增資料
@@ -154,12 +166,14 @@ class Hchun_signup_actions
     }
 
     //取得所有資料陣列
-    public static function get_all($auto_key = false)
+    public static function get_all($only_enable = true, $auto_key = false)
     {
         global $xoopsDB;
-        $myts = \MyTextSanitizer::getInstance();
+        // $myts = \MyTextSanitizer::getInstance();
 
-        $sql = "select * from `" . $xoopsDB->prefix("hchun_signup_actions") . "` where 1 ";
+        $and_enable = $only_enable ? "and `enable` = '1' and `action_date` >= now()" : '';
+
+        $sql = "select * from `" . $xoopsDB->prefix("hchun_signup_actions") . "` where 1 $and_enable";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
         while ($data = $xoopsDB->fetchArray($result)) {
